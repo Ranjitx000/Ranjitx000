@@ -1,8 +1,5 @@
 """
-Hand-authored neofetch-style SVG panel. Lines print in one after another like
-a boot log, each with a tiny [ok] tick that lands just after the line types.
-
-Edit the CONTENT list below with your own role / stack / highlights.
+Generates an AI Developer Console style SVG info card.
 """
 import os
 import sys
@@ -13,26 +10,31 @@ STATIC = os.environ.get("STATIC") == "1"
 AMBER = "#ffb400"
 AMBER_DIM = "#7a5615"
 CYAN = "#39e6ff"
+CYAN_DIM = "#186673"
 BG = "#0a0908"
 WHITE = "#f5efe0"
+GRAY = "#888888"
 
-TITLE = "Ranjitx000@github"
+TITLE = "RANJIT-AI ANALYSIS ENGINE v4.2"
 
 CONTENT = [
-    ("role", "Full-stack Engineer, Developer Tools"),
-    ("stack", "TypeScript · Python · Rust · Postgres"),
-    ("focus", "Dev-experience tooling & CLI ergonomics"),
-    ("now", "Building offline-first sync engines"),
-    ("prev", "Infra @ a Series B observability startup"),
-    ("highlight", "3x open-source maintainer, 1.2k+ stars"),
-    ("uptime", "Shipping in production since 2018"),
+    ("> analyzing developer...", CYAN),
+    ("> scanning repositories...", CYAN),
+    ("> calculating engineering profile...", CYAN),
+    ("", WHITE),
+    ("Problem Solver     [██████████] 94%", WHITE),
+    ("Frontend           [█████████░] 89%", WHITE),
+    ("Backend            [█████████░] 93%", WHITE),
+    ("API Design         [████████░░] 84%", WHITE),
+    ("", WHITE),
+    ("AI VERDICT", AMBER),
+    ('"Builder detected."', WHITE)
 ]
 
-W, H = 560, 340
+W, H = 560, 360
 PAD_X = 26
-LINE_H = 30
-TOP = 74
-CHAR_W_LABEL = 8.0  # rough monospace width for stagger calc
+LINE_H = 26
+TOP = 70
 
 
 def esc(s):
@@ -41,50 +43,40 @@ def esc(s):
 
 def main():
     rows = []
-    ticks = []
-    label_w = max(len(k) for k, _ in CONTENT)
-
     t = 0.5
-    for i, (key, val) in enumerate(CONTENT):
+
+    for i, (text, color) in enumerate(CONTENT):
         y = TOP + i * LINE_H
-        label = key.rjust(label_w)
-        full_len = len(label) + 2 + len(val)
-        dur = 0.06 + full_len * 0.014
+        if not text:
+            continue
+            
+        dur = 0.06 + len(text) * 0.012
         begin = round(t, 3)
         end = round(t + dur, 3)
 
         if STATIC:
-            rows.append(
-                f'<text x="{PAD_X}" y="{y}" class="line">'
-                f'<tspan class="key">{esc(label)}</tspan>'
-                f'<tspan class="sep"> :: </tspan>'
-                f'<tspan class="val">{esc(val)}</tspan></text>'
-            )
+            rows.append(f'<text x="{PAD_X}" y="{y}" class="line" fill="{color}">{esc(text)}</text>')
         else:
             rows.append(f'''
-  <g opacity="0" transform="translate(0, 15)">
-    <animate attributeName="opacity" from="0" to="1" begin="{begin}s" dur="0.4s" fill="freeze" calcMode="spline" keySplines="0.2 0 0.2 1"/>
-    <animateTransform attributeName="transform" type="translate" from="0 15" to="0 0" begin="{begin}s" dur="0.4s" fill="freeze" calcMode="spline" keySplines="0.2 0 0.2 1"/>
-    <text x="{PAD_X}" y="{y}" class="line">
-      <tspan class="key">{esc(label)}</tspan><tspan class="sep"> :: </tspan><tspan class="val">{esc(val)}</tspan>
-    </text>
-  </g>
-  <circle cx="{W-34}" cy="{y-5}" r="3.5" fill="{CYAN}" opacity="0" filter="url(#glow)">
-    <animate attributeName="opacity" values="0;1;0.4;1" begin="{end}s" dur="1s" fill="freeze"/>
-  </circle>''')
-        t = end + 0.09
+  <g opacity="0" transform="translate(0, 10)">
+    <animate attributeName="opacity" from="0" to="1" begin="{begin}s" dur="0.3s" fill="freeze" calcMode="spline" keySplines="0.2 0 0.2 1"/>
+    <animateTransform attributeName="transform" type="translate" from="0 10" to="0 0" begin="{begin}s" dur="0.3s" fill="freeze" calcMode="spline" keySplines="0.2 0 0.2 1"/>
+    <text x="{PAD_X}" y="{y}" class="line" fill="{color}">{esc(text)}</text>
+  </g>''')
+        
+        # Add a delay based on the line type
+        if "analyzing" in text or "scanning" in text or "calculating" in text:
+            t = end + 0.6  # Artificial "thinking" delay
+        else:
+            t = end + 0.05
 
     cursor_y = TOP + len(CONTENT) * LINE_H
     footer_begin = round(t + 0.1, 3)
 
     style = f'''
     text {{ font-family: 'JetBrains Mono','Fira Code',ui-monospace,Consolas,monospace; }}
-    .line {{ font-size: 15px; }}
-    .key {{ fill: {AMBER_DIM}; }}
-    .sep {{ fill: {AMBER_DIM}; }}
-    .val {{ fill: {WHITE}; }}
+    .line {{ font-size: 14px; white-space: pre; }}
     .title {{ fill: {AMBER}; font-size: 14px; letter-spacing: 0.5px; }}
-    .dim {{ fill: {AMBER_DIM}; font-size: 12px; }}
     '''
 
     dots = f'''
@@ -126,7 +118,7 @@ def main():
   {body_rows}
   </g>
 
-  <rect x="{PAD_X}" y="{cursor_y-14}" width="9" height="16" fill="{AMBER}" opacity="0">
+  <rect x="{PAD_X}" y="{cursor_y-14}" width="8" height="15" fill="{CYAN}" opacity="0">
     <animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.01;0.5;0.51;1" dur="1s" begin="{footer_begin}s" repeatCount="indefinite"/>
   </rect>
 </svg>'''
