@@ -149,7 +149,7 @@ def build_svg(grid):
 def main():
     grid = load_grid(SRC, COLS, ROWS)
     svg = build_svg(grid)
-    with open(OUT, "w") as f:
+    with open(OUT, "w", encoding="utf-8") as f:
         f.write(svg)
     print(f"wrote {OUT}")
 

@@ -448,5 +448,5 @@
               dur="1s" begin="3.105s" repeatCount="indefinite"/>
   </rect>
 
-  <text x="24" y="747.0" class="dim">[ok] portrait rendered · press any key to continue_</text>
+  <text x="24" y="747.0" class="dim">[ok] portrait rendered Â· press any key to continue_</text>
 </svg>

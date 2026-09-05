@@ -1522,6 +1522,6 @@
 
   <g opacity="0">
     <animate attributeName="opacity" from="0" to="1" begin="1.66s" dur="0.6s" fill="freeze"/>
-    <text x="28" y="156" class="stats">123 contributions in the last year  ·  current streak 0d  ·  longest streak 2d</text>
+    <text x="28" y="156" class="stats">123 contributions in the last year  Â·  current streak 0d  Â·  longest streak 2d</text>
   </g>
 </svg>

@@ -142,7 +142,7 @@ def main():
   </g>
 </svg>'''
 
-    with open(OUT, "w") as f:
+    with open(OUT, "w", encoding="utf-8") as f:
         f.write(svg)
     print(f"wrote {OUT}")
 
