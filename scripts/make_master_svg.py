@@ -1,6 +1,7 @@
 import json
 import sys
 import os
+import base64
 from PIL import Image
 
 OUT = sys.argv[1] if len(sys.argv) > 1 else "master-profile.svg"
@@ -53,13 +54,17 @@ def build_svg():
     rows_svg.append(header)
 
     # 2. Hero Section
-    # Load ASCII
-    ascii_grid = load_grid("scripts/demo-source.png", 40, 20)
-    ascii_lines = []
-    for i, row in enumerate(ascii_grid):
-        text = "".join(esc(c) for c in row)
-        ascii_lines.append(f'<text x="30" y="{65 + i*12}" class="ascii" fill="{GREEN}">{text}</text>')
-    rows_svg.append("".join(ascii_lines))
+    # Load and embed CHOSO PNG as base64
+    choso_path = "assets/choso-output.png"
+    if os.path.exists(choso_path):
+        with open(choso_path, "rb") as img_file:
+            b64_string = base64.b64encode(img_file.read()).decode('utf-8')
+        
+        # We want to scale it to fit the ~250x250 area
+        # X=30, Y=65. Let's make it 220px wide
+        rows_svg.append(f'<image href="data:image/png;base64,{b64_string}" x="30" y="65" width="230" height="230" />')
+    else:
+        rows_svg.append(f'<rect x="30" y="65" width="230" height="230" fill="{GREEN_DARK}" />')
 
     hero_info = f'''
     <text x="300" y="80" fill="{TEXT}" font-size="16">Hi there, I'm</text>
