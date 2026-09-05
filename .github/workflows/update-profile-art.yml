@@ -20,17 +20,17 @@ jobs:
         with:
           python-version: "3.11"
 
-      - run: pip install requests beautifulsoup4
+      - run: pip install -r scripts/requirements.txt
 
       - name: Fetch contribution calendar
         env:
           GH_USERNAME: ${{ github.repository_owner }}
         run: python scripts/fetch_contributions.py
 
-      - name: Render heatmap SVG
-        run: python scripts/render_heatmap_svg.py data/contributions.json assets/contrib-heatmap.svg
+      - name: Render master profile SVG
+        run: python scripts/make_master_svg.py assets/master-profile.svg
 
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: refresh contribution graph [skip ci]"
-          file_pattern: "data/contributions.json assets/contrib-heatmap.svg"
+          file_pattern: "data/contributions.json assets/master-profile.svg"
