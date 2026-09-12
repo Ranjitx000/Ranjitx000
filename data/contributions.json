@@ -1,5 +1,5 @@
 {
-  "weeks": 52,
+  "weeks": 53,
   "days": [
     0,
     0,
@@ -318,7 +318,7 @@
     0,
     0,
     0,
-    6,
+    9,
     0,
     0,
     0,
@@ -370,10 +370,11 @@
     0,
     0,
     0,
-    12
+    12,
+    0
   ],
-  "total": 153,
-  "current_streak": 1,
+  "total": 156,
+  "current_streak": 0,
   "longest_streak": 2,
   "best_day": 12
 }
