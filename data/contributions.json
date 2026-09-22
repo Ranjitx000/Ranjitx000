@@ -106,7 +106,7 @@
     0,
     3,
     3,
-    0,
+    3,
     3,
     6,
     0,
@@ -159,6 +159,7 @@
     0,
     3,
     3,
+    0,
     0,
     0,
     3,
@@ -368,8 +369,8 @@
     3,
     3
   ],
-  "total": 180,
+  "total": 183,
   "current_streak": 3,
-  "longest_streak": 4,
+  "longest_streak": 5,
   "best_day": 12
 }
